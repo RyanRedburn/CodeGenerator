@@ -14,13 +14,8 @@ namespace CodeGenerator.Model
 
         public string TableName { get; set; }
 
-        public List<ColumnSpecification> ColumnSpecifications { get; set; }
+        public List<ColumnSpecification> ColumnSpecifications { get; set; } = new List<ColumnSpecification>();
 
         public SpecificationProvider TableOrigin { get; set; }
-
-        public TableSpecification()
-        {
-            ColumnSpecifications = new List<ColumnSpecification>();
-        }
     }
 }

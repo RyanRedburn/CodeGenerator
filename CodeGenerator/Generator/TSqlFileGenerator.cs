@@ -15,9 +15,9 @@ namespace CodeGenerator.Generator
     {
         private readonly string _keyNotFound = "--A T-SQL statement was not generated because the application was unable to identify the table key column.";
 
-        public GeneratedFileType OutputFileType { get { return GeneratedFileType.TSql; } }
+        public GeneratedFileType OutputFileType { get; } = GeneratedFileType.TSql;
 
-        public bool QuoteIdentifiers { get; set; }
+        public bool QuoteIdentifiers { get; set; } = true;
 
         /// <summary>
         /// Generates a T-SQL code file (.sql) containing queries for GetByKey, GetAll, Insert, Update, and Delete operations.

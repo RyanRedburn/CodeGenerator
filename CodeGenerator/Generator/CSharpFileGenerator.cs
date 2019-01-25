@@ -63,7 +63,7 @@ namespace CodeGenerator.Generator
 
             var usings = new StringBuilder();
 
-            _usingStatements.ForEach(u => { if (usings.Length > 0) usings.AppendLine(); usings.Append(u); });
+            _usingStatements.ForEach(u => { if (usings.Length > 0) usings.Append("\n"); usings.Append(u); });
 
             if (addXmlNameSpace)
                 usings.AppendLine("using System.Linq.Xml;");
