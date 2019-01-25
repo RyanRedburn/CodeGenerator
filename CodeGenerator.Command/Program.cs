@@ -32,7 +32,7 @@ namespace CodeGenerator.Command
                 // Get the app config and create relevant directories if they don't exist.
                 var appConfig = GetConfiguration();
 
-                if (appConfig.CSharpConfiguration.RequestNameSpaceOnExec)
+                if (appConfig.CSharpConfiguration.Active && appConfig.CSharpConfiguration.RequestNameSpaceOnExec)
                 {
                     Console.WriteLine("C# model file name space:");
                     appConfig.CSharpConfiguration.ModelNameSpace = Console.ReadLine();
