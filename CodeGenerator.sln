@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator", "CodeGenerator\CodeGenerator.csproj", "{5FB9E767-D52C-4B64-AA34-DF3F41888505}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Command", "CodeGenerator.Command\CodeGenerator.Command.csproj", "{A2483209-35A6-427D-A37E-45075244C0A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator.Command", "CodeGenerator.Command\CodeGenerator.Command.csproj", "{A2483209-35A6-427D-A37E-45075244C0A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Test", "CodeGenerator.Test\CodeGenerator.Test.csproj", "{DA498F92-63CF-463B-9584-F40930482875}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A2483209-35A6-427D-A37E-45075244C0A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2483209-35A6-427D-A37E-45075244C0A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2483209-35A6-427D-A37E-45075244C0A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA498F92-63CF-463B-9584-F40930482875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA498F92-63CF-463B-9584-F40930482875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA498F92-63CF-463B-9584-F40930482875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA498F92-63CF-463B-9584-F40930482875}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
