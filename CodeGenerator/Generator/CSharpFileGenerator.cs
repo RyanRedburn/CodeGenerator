@@ -2,6 +2,7 @@
 using CodeGenerator.Helper;
 using CodeGenerator.Interface.Generator;
 using CodeGenerator.Model;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -35,6 +36,8 @@ namespace CodeGenerator.Generator
         /// <returns>A GeneratedFile of type CSharp.</returns>
         public GeneratedFile GenerateFile(TableSpecification tableSpecification)
         {
+            tableSpecification.TableName = RemoveInvalidCharacters(tableSpecification.TableName);
+
             var properties = new StringBuilder();
 
             var addXmlNameSpace = false;
@@ -42,6 +45,8 @@ namespace CodeGenerator.Generator
 
             foreach (var col in tableSpecification.ColumnSpecifications)
             {
+                col.ColumnName = RemoveInvalidCharacters(col.ColumnName);
+
                 if (properties.Length > 0)
                     properties.Append("\n\n\t\t");
 
@@ -66,10 +71,10 @@ namespace CodeGenerator.Generator
             _usingStatements.ForEach(u => { if (usings.Length > 0) usings.Append("\n"); usings.Append(u); });
 
             if (addXmlNameSpace)
-                usings.AppendLine("using System.Linq.Xml;");
+                usings.Append("\nusing System.Linq.Xml;");
 
-            if (addXmlNameSpace)
-                usings.AppendLine("using System.Linq.Xml;");
+            if (addSqlTypeNameSpace)
+                usings.Append("\nusing Microsoft.SqlServer.Types;");
 
             var result = new GeneratedFile
             {
@@ -184,6 +189,19 @@ namespace CodeGenerator.Generator
             }
 
             return string.Format(basePropertyString, type, columnSpecification.ColumnName);
+        }
+
+        /// <summary>
+        /// Remove invalid characters from a string that is intended to be used as a C# member name (e.g., class property, etc.).
+        /// </summary>
+        /// <param name="target">String to modify.</param>
+        /// <returns>Target string with invalid characters removed.</returns>
+        private string RemoveInvalidCharacters(string target)
+        {
+            if (string.IsNullOrWhiteSpace(target))
+                return target;
+
+            return new string(Array.FindAll(target.ToCharArray(), x => char.IsLetterOrDigit(x) || x == '_'));
         }
     }
 }
