@@ -12,7 +12,7 @@ namespace CodeGenerator.Test.Generator
         [TestMethod]
         public void OutputFileType()
         {
-            var generator = new TSqlFileGenerator() as IFileGenerator;
+            var generator = new TSqlFileGenerator();
 
             Assert.AreEqual(GeneratedFileType.TSql, generator.OutputFileType);
         }
@@ -20,11 +20,11 @@ namespace CodeGenerator.Test.Generator
         [TestMethod]
         public void GenerateFileUnquoted()
         {
-            var expectedFile = TestUtility.GetExpectedCustomerFile(GeneratedFileType.TSql, quoteIdentifiers: false);
+            var expectedFile = TestUtility.GetExpectedCustomerFileTSql(false);
 
             var tableSpec = TestUtility.GetCustomerTableSpec();
 
-            var generator = new TSqlFileGenerator { QuoteIdentifiers = false } as IFileGenerator;
+            var generator = new TSqlFileGenerator { QuoteIdentifiers = false };
 
             var file = generator.GenerateFile(tableSpec);
 
@@ -36,11 +36,11 @@ namespace CodeGenerator.Test.Generator
         [TestMethod]
         public void GenerateFileQuoted()
         {
-            var expectedFile = TestUtility.GetExpectedCustomerFile(GeneratedFileType.TSql, quoteIdentifiers: true);
+            var expectedFile = TestUtility.GetExpectedCustomerFileTSql(true);
 
             var tableSpec = TestUtility.GetCustomerTableSpec();
 
-            var generator = new TSqlFileGenerator { QuoteIdentifiers = true } as IFileGenerator;
+            var generator = new TSqlFileGenerator { QuoteIdentifiers = true };
 
             var file = generator.GenerateFile(tableSpec);
 
