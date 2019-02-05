@@ -45,6 +45,10 @@
         public string ModelNameSpace { get; set; }
 
         public bool RequestNameSpaceOnExec { get; set; } = false;
+
+        public bool AddAnnotations { get; set; } = false;
+
+        public bool OnlyExactMatchForAnnonations { get; set; } = true;
     }
 
     public class TSqlConfiguration

@@ -11,6 +11,8 @@
 
         public int ColumnType { get; set; }
 
+        public short ColumnLength { get; set; }
+
         public bool IsComputed { get; set; } = false;
 
         public bool IsNullable { get; set; } = true;

@@ -147,7 +147,12 @@ namespace CodeGenerator.Command
         {
             if (appConfig.CSharpConfiguration.Active)
             {
-                var csharpGenerator = new CSharpFileGenerator { ModelNameSpace = appConfig.CSharpConfiguration.ModelNameSpace };
+                var csharpGenerator = new CSharpFileGenerator
+                {
+                    ModelNameSpace = appConfig.CSharpConfiguration.ModelNameSpace,
+                    AddAnnotations = appConfig.CSharpConfiguration.AddAnnotations,
+                    OnlyExactMatchForAnnotations = appConfig.CSharpConfiguration.OnlyExactMatchForAnnonations
+                };
                 fgService.AddFileGenerator(csharpGenerator);
             }
 

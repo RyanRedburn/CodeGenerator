@@ -63,5 +63,53 @@ namespace CodeGenerator.Test.Generator
             Assert.AreEqual(expectedFile.FileType, file.FileType);
             Assert.AreEqual(expectedFile.FileContents, file.FileContents);
         }
+
+        [TestMethod]
+        public void GenerateFileWithAnnotations()
+        {
+            var expectedFile = TestUtility.GetExpectedCustomerFileCSharp(nameSpace: "Test", addAnnotations: true);
+
+            var tableSpec = TestUtility.GetCustomerTableSpec();
+
+            var generator = new CSharpFileGenerator { ModelNameSpace = "Test", AddAnnotations = true, OnlyExactMatchForAnnotations = true };
+
+            var file = generator.GenerateFile(tableSpec);
+
+            Assert.AreEqual(expectedFile.FileName, file.FileName);
+            Assert.AreEqual(expectedFile.FileType, file.FileType);
+            Assert.AreEqual(expectedFile.FileContents, file.FileContents);
+        }
+
+        [TestMethod]
+        public void GenerateFileWithApproxAnnotations()
+        {
+            var expectedFile = TestUtility.GetExpectedCustomerFileCSharp(nameSpace: "Test", addAnnotations: true, onlyExactMatchForAnnotations: false);
+
+            var tableSpec = TestUtility.GetCustomerTableSpec();
+
+            var generator = new CSharpFileGenerator { ModelNameSpace = "Test", AddAnnotations = true, OnlyExactMatchForAnnotations = false };
+
+            var file = generator.GenerateFile(tableSpec);
+
+            Assert.AreEqual(expectedFile.FileName, file.FileName);
+            Assert.AreEqual(expectedFile.FileType, file.FileType);
+            Assert.AreEqual(expectedFile.FileContents, file.FileContents);
+        }
+
+        [TestMethod]
+        public void GenerateFileWithExtendedProperties()
+        {
+            var expectedFile = TestUtility.GetExpectedCustomerFileCSharp("Test", true, true, true, false, true);
+
+            var tableSpec = TestUtility.GetCustomerTableSpec(true, true, true);
+
+            var generator = new CSharpFileGenerator { ModelNameSpace = "Test", AddAnnotations = true, OnlyExactMatchForAnnotations = false };
+
+            var file = generator.GenerateFile(tableSpec);
+
+            Assert.AreEqual(expectedFile.FileName, file.FileName);
+            Assert.AreEqual(expectedFile.FileType, file.FileType);
+            Assert.AreEqual(expectedFile.FileContents, file.FileContents);
+        }
     }
 }

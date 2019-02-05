@@ -15,7 +15,8 @@
 
             internal static string GetColumnSpecification =
                 @"SELECT c.[object_id] AS ObjectId, c.[name] AS ColumnName, c.user_type_id AS ColumnType,
-                c.is_computed AS IsComputed, c.is_nullable AS IsNullable, c.is_identity AS IsIdentity
+                c.is_computed AS IsComputed, c.is_nullable AS IsNullable, c.is_identity AS IsIdentity,
+                c.max_length AS ColumnLength
                 FROM sys.tables AS t
                 JOIN sys.columns AS c ON c.[object_id] = t.[object_id]
                 WHERE t.[type] = 'U' AND t.is_ms_shipped = 0 AND t.is_external = 0;";
