@@ -21,8 +21,8 @@ namespace CodeGenerator.Command
     {
         private static readonly Dictionary<GeneratedFileType, string> _fileDirectories = new Dictionary<GeneratedFileType, string>
             {
-                { GeneratedFileType.CSharp, "C#" },
-                { GeneratedFileType.TSql, "T-SQL" }
+                { GeneratedFileType.CSharpModel, "C#" },
+                { GeneratedFileType.TSqlQuery, "T-SQL" }
             };
 
         private static void Main(string[] args)
@@ -32,10 +32,10 @@ namespace CodeGenerator.Command
                 // Get the app config and create relevant directories if they don't exist.
                 var appConfig = GetConfiguration();
 
-                if (appConfig.CSharpConfiguration.Active && appConfig.CSharpConfiguration.RequestNameSpaceOnExec)
+                if (appConfig.CSharpModelConfiguration.Active && appConfig.CSharpModelConfiguration.RequestNameSpaceOnExec)
                 {
                     Console.WriteLine("C# model file name space:");
-                    appConfig.CSharpConfiguration.ModelNameSpace = Console.ReadLine();
+                    appConfig.CSharpModelConfiguration.ModelNameSpace = Console.ReadLine();
                 }
 
                 if (!Directory.Exists(appConfig.CodeDirectory))
@@ -145,20 +145,20 @@ namespace CodeGenerator.Command
         /// <param name="appConfig">Configuration object to take settings from.</param>
         private static void AddFileGenerators(ref IFileGenerationService fgService, ApplicationConfiguration appConfig)
         {
-            if (appConfig.CSharpConfiguration.Active)
+            if (appConfig.CSharpModelConfiguration.Active)
             {
-                var csharpGenerator = new CSharpFileGenerator
+                var csharpGenerator = new CSharpModelFileGenerator
                 {
-                    ModelNameSpace = appConfig.CSharpConfiguration.ModelNameSpace,
-                    AddAnnotations = appConfig.CSharpConfiguration.AddAnnotations,
-                    OnlyExactMatchForAnnotations = appConfig.CSharpConfiguration.OnlyExactMatchForAnnonations
+                    ModelNameSpace = appConfig.CSharpModelConfiguration.ModelNameSpace,
+                    AddAnnotations = appConfig.CSharpModelConfiguration.AddAnnotations,
+                    OnlyExactMatchForAnnotations = appConfig.CSharpModelConfiguration.OnlyExactMatchForAnnonations
                 };
                 fgService.AddFileGenerator(csharpGenerator);
             }
 
-            if (appConfig.TSqlConfiguration.Active)
+            if (appConfig.TSqlQueryConfiguration.Active)
             {
-                var tsqlGenerator = new TSqlFileGenerator() { QuoteIdentifiers = appConfig.TSqlConfiguration.QuoteIdentifiers };
+                var tsqlGenerator = new TSqlQueryFileGenerator() { QuoteIdentifiers = appConfig.TSqlQueryConfiguration.QuoteIdentifiers };
                 fgService.AddFileGenerator(tsqlGenerator);
             }
         }

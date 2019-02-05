@@ -6,24 +6,24 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CodeGenerator.Test.Generator
 {
     [TestClass]
-    public class CSharpFileGeneratorTest
+    public class CSharpModelFileGeneratorTest
     {
         [TestMethod]
         public void OutputFileType()
         {
-            var generator = new CSharpFileGenerator();
+            var generator = new CSharpModelFileGenerator();
 
-            Assert.AreEqual(GeneratedFileType.CSharp, generator.OutputFileType);
+            Assert.AreEqual(GeneratedFileType.CSharpModel, generator.OutputFileType);
         }
 
         [TestMethod]
         public void GenerateFile()
         {
-            var expectedFile = TestUtility.GetExpectedCustomerFileCSharp(nameSpace: "Test");
+            var expectedFile = TestUtility.GetExpectedCustomerFileCSharpModel(nameSpace: "Test");
 
             var tableSpec = TestUtility.GetCustomerTableSpec();
 
-            var generator = new CSharpFileGenerator { ModelNameSpace = "Test" };
+            var generator = new CSharpModelFileGenerator { ModelNameSpace = "Test" };
 
             var file = generator.GenerateFile(tableSpec);
 
@@ -35,11 +35,11 @@ namespace CodeGenerator.Test.Generator
         [TestMethod]
         public void GenerateFileWithXmlProperty()
         {
-            var expectedFile = TestUtility.GetExpectedCustomerFileCSharp(nameSpace: "Test", addXmlProp: true);
+            var expectedFile = TestUtility.GetExpectedCustomerFileCSharpModel(nameSpace: "Test", addXmlProp: true);
 
             var tableSpec = TestUtility.GetCustomerTableSpec(addXmlProp: true);
 
-            var generator = new CSharpFileGenerator { ModelNameSpace = "Test" };
+            var generator = new CSharpModelFileGenerator { ModelNameSpace = "Test" };
 
             var file = generator.GenerateFile(tableSpec);
 
@@ -51,11 +51,11 @@ namespace CodeGenerator.Test.Generator
         [TestMethod]
         public void GenerateFileWithSqlSpecificProps()
         {
-            var expectedFile = TestUtility.GetExpectedCustomerFileCSharp(nameSpace: "Test", addSqlSpecificProps: true);
+            var expectedFile = TestUtility.GetExpectedCustomerFileCSharpModel(nameSpace: "Test", addSqlSpecificProps: true);
 
             var tableSpec = TestUtility.GetCustomerTableSpec(addSqlSpecificProps: true);
 
-            var generator = new CSharpFileGenerator { ModelNameSpace = "Test" };
+            var generator = new CSharpModelFileGenerator { ModelNameSpace = "Test" };
 
             var file = generator.GenerateFile(tableSpec);
 
@@ -67,11 +67,11 @@ namespace CodeGenerator.Test.Generator
         [TestMethod]
         public void GenerateFileWithAnnotations()
         {
-            var expectedFile = TestUtility.GetExpectedCustomerFileCSharp(nameSpace: "Test", addAnnotations: true);
+            var expectedFile = TestUtility.GetExpectedCustomerFileCSharpModel(nameSpace: "Test", addAnnotations: true);
 
             var tableSpec = TestUtility.GetCustomerTableSpec();
 
-            var generator = new CSharpFileGenerator { ModelNameSpace = "Test", AddAnnotations = true, OnlyExactMatchForAnnotations = true };
+            var generator = new CSharpModelFileGenerator { ModelNameSpace = "Test", AddAnnotations = true, OnlyExactMatchForAnnotations = true };
 
             var file = generator.GenerateFile(tableSpec);
 
@@ -83,11 +83,11 @@ namespace CodeGenerator.Test.Generator
         [TestMethod]
         public void GenerateFileWithApproxAnnotations()
         {
-            var expectedFile = TestUtility.GetExpectedCustomerFileCSharp(nameSpace: "Test", addAnnotations: true, onlyExactMatchForAnnotations: false);
+            var expectedFile = TestUtility.GetExpectedCustomerFileCSharpModel(nameSpace: "Test", addAnnotations: true, onlyExactMatchForAnnotations: false);
 
             var tableSpec = TestUtility.GetCustomerTableSpec();
 
-            var generator = new CSharpFileGenerator { ModelNameSpace = "Test", AddAnnotations = true, OnlyExactMatchForAnnotations = false };
+            var generator = new CSharpModelFileGenerator { ModelNameSpace = "Test", AddAnnotations = true, OnlyExactMatchForAnnotations = false };
 
             var file = generator.GenerateFile(tableSpec);
 
@@ -99,11 +99,11 @@ namespace CodeGenerator.Test.Generator
         [TestMethod]
         public void GenerateFileWithExtendedProperties()
         {
-            var expectedFile = TestUtility.GetExpectedCustomerFileCSharp("Test", true, true, true, false, true);
+            var expectedFile = TestUtility.GetExpectedCustomerFileCSharpModel("Test", true, true, true, false, true);
 
             var tableSpec = TestUtility.GetCustomerTableSpec(true, true, true);
 
-            var generator = new CSharpFileGenerator { ModelNameSpace = "Test", AddAnnotations = true, OnlyExactMatchForAnnotations = false };
+            var generator = new CSharpModelFileGenerator { ModelNameSpace = "Test", AddAnnotations = true, OnlyExactMatchForAnnotations = false };
 
             var file = generator.GenerateFile(tableSpec);
 

@@ -7,24 +7,24 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CodeGenerator.Test.Generator
 {
     [TestClass]
-    public class TSqlFileGeneratorTest
+    public class TSqlQueryFileGeneratorTest
     {
         [TestMethod]
         public void OutputFileType()
         {
-            var generator = new TSqlFileGenerator();
+            var generator = new TSqlQueryFileGenerator();
 
-            Assert.AreEqual(GeneratedFileType.TSql, generator.OutputFileType);
+            Assert.AreEqual(GeneratedFileType.TSqlQuery, generator.OutputFileType);
         }
 
         [TestMethod]
         public void GenerateFileUnquoted()
         {
-            var expectedFile = TestUtility.GetExpectedCustomerFileTSql(false);
+            var expectedFile = TestUtility.GetExpectedCustomerFileTSqlQuery(false);
 
             var tableSpec = TestUtility.GetCustomerTableSpec();
 
-            var generator = new TSqlFileGenerator { QuoteIdentifiers = false };
+            var generator = new TSqlQueryFileGenerator { QuoteIdentifiers = false };
 
             var file = generator.GenerateFile(tableSpec);
 
@@ -36,11 +36,11 @@ namespace CodeGenerator.Test.Generator
         [TestMethod]
         public void GenerateFileQuoted()
         {
-            var expectedFile = TestUtility.GetExpectedCustomerFileTSql(true);
+            var expectedFile = TestUtility.GetExpectedCustomerFileTSqlQuery(true);
 
             var tableSpec = TestUtility.GetCustomerTableSpec();
 
-            var generator = new TSqlFileGenerator { QuoteIdentifiers = true };
+            var generator = new TSqlQueryFileGenerator { QuoteIdentifiers = true };
 
             var file = generator.GenerateFile(tableSpec);
 

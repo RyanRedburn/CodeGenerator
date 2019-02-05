@@ -11,11 +11,11 @@ using System.Xml.Linq;
 namespace CodeGenerator.Generator
 {
     /// <summary>
-    /// A file generator for C# (Microsoft .Net).
+    /// A file generator for C# models.
     /// </summary>
-    public class CSharpFileGenerator : IFileGenerator
+    public class CSharpModelFileGenerator : IFileGenerator
     {
-        public GeneratedFileType OutputFileType { get { return GeneratedFileType.CSharp; } }
+        public GeneratedFileType OutputFileType { get { return GeneratedFileType.CSharpModel; } }
 
         private List<string> _usingStatements { get; set; }
 
@@ -25,7 +25,7 @@ namespace CodeGenerator.Generator
 
         public bool OnlyExactMatchForAnnotations { get; set; } = true;
 
-        public CSharpFileGenerator()
+        public CSharpModelFileGenerator()
         {
             _usingStatements = new List<string>
             {

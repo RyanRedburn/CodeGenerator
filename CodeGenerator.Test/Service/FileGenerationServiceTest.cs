@@ -23,9 +23,9 @@ namespace CodeGenerator.Test.Service
             var logger = new Mock<ILogger>();
             var service = new FileGenerationService(logger.Object, repository.Object);
 
-            service.AddFileGenerator(new CSharpFileGenerator());
+            service.AddFileGenerator(new CSharpModelFileGenerator());
 
-            var generator = service.FileGenerators.SingleOrDefault(x => x.OutputFileType == GeneratedFileType.CSharp);
+            var generator = service.FileGenerators.SingleOrDefault(x => x.OutputFileType == GeneratedFileType.CSharpModel);
 
             Assert.IsNotNull(generator);
         }
@@ -37,10 +37,10 @@ namespace CodeGenerator.Test.Service
             var logger = new Mock<ILogger>();
             var service = new FileGenerationService(logger.Object, repository.Object);
 
-            service.AddFileGenerator(new CSharpFileGenerator());
+            service.AddFileGenerator(new CSharpModelFileGenerator());
 
-            var ex = Assert.ThrowsException<InvalidOperationException>(() => service.AddFileGenerator(new CSharpFileGenerator()));
-            Assert.AreEqual(string.Format("IFileGenerator with output type {0} is already present in the service collection.", GeneratedFileType.CSharp), ex.Message);
+            var ex = Assert.ThrowsException<InvalidOperationException>(() => service.AddFileGenerator(new CSharpModelFileGenerator()));
+            Assert.AreEqual(string.Format("IFileGenerator with output type {0} is already present in the service collection.", GeneratedFileType.CSharpModel), ex.Message);
         }
 
         [TestMethod]
@@ -50,11 +50,11 @@ namespace CodeGenerator.Test.Service
             var logger = new Mock<ILogger>();
             var service = new FileGenerationService(logger.Object, repository.Object);
 
-            service.AddFileGenerator(new CSharpFileGenerator());
+            service.AddFileGenerator(new CSharpModelFileGenerator());
 
-            service.RemoveFileGenerator(GeneratedFileType.CSharp);
+            service.RemoveFileGenerator(GeneratedFileType.CSharpModel);
 
-            var generator = service.FileGenerators.SingleOrDefault(x => x.OutputFileType == GeneratedFileType.CSharp);
+            var generator = service.FileGenerators.SingleOrDefault(x => x.OutputFileType == GeneratedFileType.CSharpModel);
 
             Assert.IsNull(generator);
             Assert.AreEqual(0, service.FileGenerators.Count());
@@ -67,19 +67,19 @@ namespace CodeGenerator.Test.Service
             repository.Setup(x => x.GetAll()).Returns(new List<TableSpecification> { TestUtility.GetCustomerTableSpec() });
             var logger = new Mock<ILogger>();
             var service = new FileGenerationService(logger.Object, repository.Object);
-            service.AddFileGenerator(new CSharpFileGenerator());
-            service.AddFileGenerator(new TSqlFileGenerator());
+            service.AddFileGenerator(new CSharpModelFileGenerator());
+            service.AddFileGenerator(new TSqlQueryFileGenerator());
 
             var result = service.GenerateFiles();
 
-            Assert.IsTrue(result.ContainsKey(GeneratedFileType.CSharp));
-            Assert.IsTrue(result.ContainsKey(GeneratedFileType.TSql));
+            Assert.IsTrue(result.ContainsKey(GeneratedFileType.CSharpModel));
+            Assert.IsTrue(result.ContainsKey(GeneratedFileType.TSqlQuery));
 
             IEnumerable<GeneratedFile> csharp = null;
             IEnumerable<GeneratedFile> tsql = null;
 
-            result.TryGetValue(GeneratedFileType.CSharp, out csharp);
-            result.TryGetValue(GeneratedFileType.TSql, out tsql);
+            result.TryGetValue(GeneratedFileType.CSharpModel, out csharp);
+            result.TryGetValue(GeneratedFileType.TSqlQuery, out tsql);
 
             Assert.AreEqual(1, csharp.Count());
             Assert.AreEqual(1, tsql.Count());

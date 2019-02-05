@@ -31,14 +31,14 @@
 
         public ConnectionType ConnectionType { get; set; }
 
-        public CSharpConfiguration CSharpConfiguration { get; set; } = new CSharpConfiguration();
+        public CSharpModelConfiguration CSharpModelConfiguration { get; set; } = new CSharpModelConfiguration();
 
-        public TSqlConfiguration TSqlConfiguration { get; set; } = new TSqlConfiguration();
+        public TSqlQueryConfiguration TSqlQueryConfiguration { get; set; } = new TSqlQueryConfiguration();
 
         #endregion
     }
 
-    public class CSharpConfiguration
+    public class CSharpModelConfiguration
     {
         public bool Active { get; set; } = false;
 
@@ -51,7 +51,7 @@
         public bool OnlyExactMatchForAnnonations { get; set; } = true;
     }
 
-    public class TSqlConfiguration
+    public class TSqlQueryConfiguration
     {
         public bool Active { get; set; } = false;
 

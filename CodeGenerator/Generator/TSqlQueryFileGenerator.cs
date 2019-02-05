@@ -9,13 +9,13 @@ using System.Text;
 namespace CodeGenerator.Generator
 {
     /// <summary>
-    /// A file generator for T-SQL (Microsoft SQL Server SQL dialect).
+    /// A file generator for T-SQL CRUD queries.
     /// </summary>
-    public class TSqlFileGenerator : IFileGenerator
+    public class TSqlQueryFileGenerator : IFileGenerator
     {
         private readonly string _keyNotFound = "--A T-SQL statement was not generated because the application was unable to identify the table key column.";
 
-        public GeneratedFileType OutputFileType { get; } = GeneratedFileType.TSql;
+        public GeneratedFileType OutputFileType { get; } = GeneratedFileType.TSqlQuery;
 
         public bool QuoteIdentifiers { get; set; } = true;
 

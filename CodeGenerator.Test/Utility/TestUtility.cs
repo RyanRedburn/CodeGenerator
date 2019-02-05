@@ -136,12 +136,12 @@ namespace CodeGenerator.Test.Utility
         /// </summary>
         /// <param name="quoteIdentifiers">Whether or not to quote identifiers.</param>
         /// <returns>Customer T-SQL file.</returns>
-        internal static GeneratedFile GetExpectedCustomerFileTSql(bool quoteIdentifiers = true)
+        internal static GeneratedFile GetExpectedCustomerFileTSqlQuery(bool quoteIdentifiers = true)
         {
             return new GeneratedFile
             {
                 FileName = "Customer.sql",
-                FileType = GeneratedFileType.TSql,
+                FileType = GeneratedFileType.TSqlQuery,
                 FileContents = quoteIdentifiers
                     ? "--GetByKey\nSELECT [Id], [FirstName], [LastName], [ContactPhone], [ZipCode] FROM [dbo].[Customer] WHERE [Id] = @Id;\n\n--GetAll\nSELECT [Id], [FirstName], [LastName], [ContactPhone], [ZipCode] FROM [dbo].[Customer];\n\n--Insert\nINSERT [dbo].[Customer]([FirstName], [LastName], [ContactPhone], [ZipCode]) VALUES (@FirstName, @LastName, @ContactPhone, @ZipCode);\n\n--Update\nUPDATE [dbo].[Customer] SET [FirstName] = @FirstName, [LastName] = @LastName, [ContactPhone] = @ContactPhone, [ZipCode] = @ZipCode WHERE [Id] = @Id;\n\n--Delete\nDELETE [dbo].[Customer] WHERE [Id] = @Id;"
                     : "--GetByKey\nSELECT Id, FirstName, LastName, ContactPhone, ZipCode FROM dbo.Customer WHERE Id = @Id;\n\n--GetAll\nSELECT Id, FirstName, LastName, ContactPhone, ZipCode FROM dbo.Customer;\n\n--Insert\nINSERT dbo.Customer(FirstName, LastName, ContactPhone, ZipCode) VALUES (@FirstName, @LastName, @ContactPhone, @ZipCode);\n\n--Update\nUPDATE dbo.Customer SET FirstName = @FirstName, LastName = @LastName, ContactPhone = @ContactPhone, ZipCode = @ZipCode WHERE Id = @Id;\n\n--Delete\nDELETE dbo.Customer WHERE Id = @Id;"
@@ -158,7 +158,7 @@ namespace CodeGenerator.Test.Utility
         /// <param name="onlyExactMatchForAnnotations">Whether or not to add annotations for data types based on approximation.</param>
         /// <param name="addExtendedProps">Whether or not to add extended properties (e.g., Password, EmailAddress, etc.).</param>
         /// <returns>Customer C# file.</returns>
-        internal static GeneratedFile GetExpectedCustomerFileCSharp(string nameSpace = null, bool addXmlProp = false, bool addSqlSpecificProps = false, bool addAnnotations = false, bool onlyExactMatchForAnnotations = true, bool addExtendedProps = false)
+        internal static GeneratedFile GetExpectedCustomerFileCSharpModel(string nameSpace = null, bool addXmlProp = false, bool addSqlSpecificProps = false, bool addAnnotations = false, bool onlyExactMatchForAnnotations = true, bool addExtendedProps = false)
         {
             var contents = new StringBuilder();
 
@@ -205,7 +205,7 @@ namespace CodeGenerator.Test.Utility
             return new GeneratedFile
             {
                 FileName = "Customer.cs",
-                FileType = GeneratedFileType.CSharp,
+                FileType = GeneratedFileType.CSharpModel,
                 FileContents = contents.ToString()
             };
         }

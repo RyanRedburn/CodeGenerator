@@ -5,7 +5,7 @@
     /// </summary>
     public enum GeneratedFileType
     {
-        CSharp = 1,
-        TSql = 2
+        CSharpModel = 1,
+        TSqlQuery = 2
     }
 }
