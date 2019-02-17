@@ -27,9 +27,21 @@
             }
         }
 
-        public string SourceConnection { get; set; }
+        public bool RequestCodeDirectoryOnExec
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(_codeDirectory);
+            }
+        }
+
+        public string SourceConnectionString { get; set; }
 
         public ConnectionType ConnectionType { get; set; }
+
+        public bool RequestFullConnectionOnExec { get; set; } = true;
+
+        public bool RequestCatalogOnlyOnExec { get; set; } = false;
 
         public CSharpModelConfiguration CSharpModelConfiguration { get; set; } = new CSharpModelConfiguration();
 

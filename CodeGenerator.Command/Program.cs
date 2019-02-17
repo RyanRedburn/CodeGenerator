@@ -14,6 +14,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace CodeGenerator.Command
 {
@@ -29,15 +30,17 @@ namespace CodeGenerator.Command
         {
             try
             {
-                // Get the app config and create relevant directories if they don't exist.
+                // Get the app config, request input from the user as appropriate, and create relevant directories if they don't exist.
                 var appConfig = GetConfiguration();
 
-                if (appConfig.CSharpModelConfiguration.Active && appConfig.CSharpModelConfiguration.RequestNameSpaceOnExec)
-                {
-                    Console.WriteLine("C# model file name space:");
-                    appConfig.CSharpModelConfiguration.ModelNameSpace = Console.ReadLine();
-                }
+                if (appConfig.RequestFullConnectionOnExec || appConfig.RequestCatalogOnlyOnExec || string.IsNullOrWhiteSpace(appConfig.SourceConnectionString))
+                    appConfig.SourceConnectionString = RequestConnectionString(appConfig.RequestFullConnectionOnExec ? false : appConfig.RequestCatalogOnlyOnExec, appConfig.SourceConnectionString);
 
+                if (appConfig.CSharpModelConfiguration.Active && appConfig.CSharpModelConfiguration.RequestNameSpaceOnExec)
+                    appConfig.CSharpModelConfiguration.ModelNameSpace = RequestUserInput("C# model file name space:", true);
+
+                if (appConfig.RequestCodeDirectoryOnExec)
+                    appConfig.CodeDirectory = RequestUserInput("Code generation output directory:", true);
                 if (!Directory.Exists(appConfig.CodeDirectory))
                     Directory.CreateDirectory(appConfig.CodeDirectory);
 
@@ -63,6 +66,7 @@ namespace CodeGenerator.Command
                         }
                     }
 
+                    Console.WriteLine();
                     Console.WriteLine("Code generation completed. Output was written to " + appConfig.CodeDirectory);
                 }
                 else
@@ -84,10 +88,35 @@ namespace CodeGenerator.Command
             }
         }
 
+        /// <summary>
+        /// Simple wrapper for writing an error message to the console.
+        /// </summary>
+        /// <param name="message">Error message.</param>
         private static void WriteConsoleError(string message)
         {
             Console.WriteLine("Code generation failed with error:");
             Console.WriteLine(message);
+        }
+
+        /// <summary>
+        /// Prompts a user for input using the given message.
+        /// </summary>
+        /// <param name="prompt">The message to use as a prompt.</param>
+        /// <param name="retryOnFailure">Whether or not the user should continue to be prompted on submitting invalid input.</param>
+        /// <returns>User string input.</returns>
+        private static string RequestUserInput(string prompt, bool retryOnFailure = false)
+        {
+            string input = null;
+            var inputIsValid = false;
+            do
+            {
+                Console.WriteLine(prompt);
+                input = Console.ReadLine();
+
+                if (!string.IsNullOrWhiteSpace(input))
+                    inputIsValid = true;
+            } while (retryOnFailure && !inputIsValid);
+            return input;
         }
 
         /// <summary>
@@ -103,13 +132,58 @@ namespace CodeGenerator.Command
 
             var appConfig = config.GetSection("ApplicationConfiguration").Get<ApplicationConfiguration>();
 
-            if (string.IsNullOrWhiteSpace(appConfig.CodeDirectory))
-                throw new InvalidOperationException("CodeDirectory most be a valid directory UNC path.");
-
-            if (string.IsNullOrWhiteSpace(appConfig.SourceConnection))
-                throw new InvalidOperationException("SourceConnection most be a valid connection string.");
-
             return appConfig;
+        }
+
+        /// <summary>
+        /// Prompt the user for connection string information.
+        /// </summary>
+        /// <param name="catalogOnly">If true, only the database name is requested.</param>
+        /// <param name="connString">If catalogOnly, the base connection string is required so it can be modified.</param>
+        /// <returns>Database connection string.</returns>
+        private static string RequestConnectionString(bool catalogOnly = false, string connString = null)
+        {
+            if (catalogOnly && !string.IsNullOrEmpty(connString))
+            {
+                var catalog = RequestUserInput("Source database:", true);
+
+                var result = new StringBuilder();
+                int position = 0, equalCount = 0, semicolonCount = 0;
+                var building = true;
+                while (building)
+                {
+                    if (connString[position] == '=')
+                    {
+                        equalCount++;
+                        if (equalCount == 2)
+                        {
+                            result.Append(connString.Substring(0, position + 1));
+                            result.Append(catalog);
+                        }
+                    }
+                    else if (connString[position] == ';')
+                    {
+                        semicolonCount++;
+                        if (semicolonCount == 2)
+                        {
+                            result.Append(connString.Substring(position));
+                            building = false;
+                        }
+                    }
+                    position++;
+                }
+
+                return result.ToString();
+            }
+
+            connString = "data source={0};initial catalog={1};user id={2};password={3};";
+
+            var dbServer = RequestUserInput("Source database server:", true);
+            var database = RequestUserInput("Source database:", true);
+            var userName = RequestUserInput("Database server user name:", true);
+            var password = RequestUserInput("Database server password for user:", true);
+
+            return string.Format(connString, dbServer, database, userName, password);
         }
 
         /// <summary>
@@ -129,7 +203,7 @@ namespace CodeGenerator.Command
                 case ConnectionType.SqlServer:
                     services
                         .AddTransient<ISpecificationRepository, SqlServerSpecificationRepository>()
-                        .AddTransient(typeof(IDbConnection), x => new SqlConnection(appConfig.SourceConnection));
+                        .AddTransient(typeof(IDbConnection), x => new SqlConnection(appConfig.SourceConnectionString));
                     break;
             }
 
